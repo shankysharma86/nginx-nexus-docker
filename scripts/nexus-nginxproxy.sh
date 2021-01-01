@@ -1,3 +1,11 @@
+# ............................... DISCLAIMER ............................ #
+#
+#These scripts come without warranty of any kind. Use them at your own risk. 
+#I assume no liability for the accuracy, correctness, completeness, or usefulness
+#of any information provided by this script nor for any sort of damages using 
+#these scripts may cause.
+# ....................................................................... #
+
 #!/bin/bash
 
 # Generate Root Key rootCA.key with 2048
@@ -26,6 +34,9 @@ fi
 # Generate nexus Cert
 openssl req -subj "/C=US/ST=Random/L=Random/O=Global Security/OU=IT Department/CN=localhost"  -new -sha256 -nodes -out ../certs/nexus.csr -newkey rsa:2048 -keyout ../certs/nexuskey.pem
 openssl x509 -req -passin pass:"$1" -in ../certs/nexus.csr -CA ../certs/rootCA.pem -CAkey ../certs/rootCA.key -CAcreateserial -out ../certs/nexuscert.crt -days 500 -sha256 -extfile  <(printf "subjectAltName=DNS:localhost,DNS:nexus-repo")
+
+# Create certs directory
+mkdir ../certs
 
 cd ../nginx/
 echo $PWD
